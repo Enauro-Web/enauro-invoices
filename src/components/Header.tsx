@@ -7,6 +7,7 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import Link from "next/link";
+import { ModeToggle } from "./ui/toggle-mode";
 
 const Header = () => {
   return (
@@ -24,13 +25,14 @@ const Header = () => {
               </span>
             </SignedIn>
           </div>
-          <div>
+          <div className="flex flex-row gap-2">
             <SignedOut>
               <SignInButton />
             </SignedOut>
             <SignedIn>
               <UserButton />
             </SignedIn>
+            <ModeToggle />
           </div>
         </div>
       </Container>

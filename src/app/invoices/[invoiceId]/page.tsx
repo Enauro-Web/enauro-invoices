@@ -19,40 +19,46 @@ export default async function InvoicePage({
     throw new Error("Invalid Invoice ID");
   }
 
-  // Displaying all invoices for public demo
+  // Displaying all invoices for PUBLIC DEMO
 
+  // let [result]: Array<{
+  //   invoices: typeof Invoices.$inferSelect;
+  //   customers: typeof Customers.$inferSelect;
+  // }> = await db
+  //   .select()
+  //   .from(Invoices)
+  //   .innerJoin(Customers, eq(Invoices.customerId, Customers.id))
+  //   .limit(1);
+
+  // FOR REAL APPLICATION
   let [result]: Array<{
-    invoices: typeof Invoices.$inferSelect;
-    customers: typeof Customers.$inferSelect;
-  }> = await db
-    .select()
-    .from(Invoices)
-    .innerJoin(Customers, eq(Invoices.customerId, Customers.id))
-    .limit(1);
+      invoices: typeof Invoices.$inferSelect;
+      customers: typeof Customers.$inferSelect;
+    }> = []
 
-  // if (orgId) {
-  //   [result] = await db
-  //     .select()
-  //     .from(Invoices)
-  //     .innerJoin(Customers, eq(Invoices.customerId, Customers.id))
-  //     .where(
-  //       and(eq(Invoices.id, invoiceId), eq(Invoices.organizationId, orgId)),
-  //     )
-  //     .limit(1);
-  // } else {
-  //   [result] = await db
-  //     .select()
-  //     .from(Invoices)
-  //     .innerJoin(Customers, eq(Invoices.customerId, Customers.id))
-  //     .where(
-  //       and(
-  //         eq(Invoices.id, invoiceId),
-  //         eq(Invoices.userId, userId),
-  //         isNull(Invoices.organizationId),
-  //       ),
-  //     )
-  //     .limit(1);
-  // }
+  if (orgId) {
+    [result] = await db
+      .select()
+      .from(Invoices)
+      .innerJoin(Customers, eq(Invoices.customerId, Customers.id))
+      .where(
+        and(eq(Invoices.id, invoiceId), eq(Invoices.organizationId, orgId)),
+      )
+      .limit(1);
+  } else {
+    [result] = await db
+      .select()
+      .from(Invoices)
+      .innerJoin(Customers, eq(Invoices.customerId, Customers.id))
+      .where(
+        and(
+          eq(Invoices.id, invoiceId),
+          eq(Invoices.userId, userId),
+          isNull(Invoices.organizationId),
+        ),
+      )
+      .limit(1);
+  }
 
   if (!result) {
     notFound();
@@ -62,6 +68,6 @@ export default async function InvoicePage({
     ...result.invoices,
     customer: result.customers,
   };
-
+  
   return <Invoice invoice={invoice} />;
 }

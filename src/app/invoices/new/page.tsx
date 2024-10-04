@@ -33,7 +33,7 @@ export default function NewInvoice() {
       </div>
 
       <form
-        action={createAction}
+        // action={createAction}
         className="grid gap-4 max-w-xs"
         onSubmit={(e) => handleSubmit(e)}
       >
