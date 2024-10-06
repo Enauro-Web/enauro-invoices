@@ -3,7 +3,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-// import { Resend } from "resend";
+import { Resend } from "resend";
 import Stripe from "stripe";
 
 import { db } from "@/db";
@@ -14,7 +14,7 @@ import { headers } from "next/headers";
 import { InvoiceCreatedEmail } from "@/emails/invoice-created";
 
 const stripe = new Stripe(String(process.env.STRIPE_API_SECRET));
-// const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function createAction(formData: FormData) {
   const { userId, orgId } = auth();
@@ -116,7 +116,7 @@ export async function deleteInvoiceAction(formData: FormData) {
   const { userId, orgId } = auth();
 
   // Deleting disabled for demo
-  if ( userId !== process.env.ME_ID ) return;
+  // if ( userId !== process.env.ME_ID ) return;
 
   if (!userId) {
     return;
@@ -151,7 +151,7 @@ export async function deleteInvoiceAction(formData: FormData) {
 export async function createPayment(formData: FormData) {
   // Payments disabled for demo
   const { userId } = auth();
-  if ( userId !== process.env.ME_ID ) return;
+  // if ( userId !== process.env.ME_ID ) return;
 
   const headersList = headers();
   const origin = headersList.get("origin");
@@ -171,7 +171,7 @@ export async function createPayment(formData: FormData) {
       {
         price_data: {
           currency: "usd",
-          product: "prod_QusOUzstGsvmvf",
+          product: "prod_QymXXTEa85g1jG",
           unit_amount: result.value,
         },
         quantity: 1,

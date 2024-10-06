@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { and, eq, isNull } from "drizzle-orm";
 import { CirclePlus } from "lucide-react";
 
@@ -22,8 +22,14 @@ import Link from "next/link";
 
 export default async function Home() {
   const { userId, orgId } = auth();
-
+  // console.log(auth())
+  
   if (!userId) return;
+
+  const userInfo = await clerkClient.users.getUser(userId)
+
+
+  console.log(userInfo.publicMetadata)
 
   // Displaying all invoices for public demo
 
@@ -59,9 +65,9 @@ export default async function Home() {
   return (
     <main className="h-full">
       <Container>
-        <p className="bg-yellow-100 text-sm text-yellow-800 text-center px-3 py-2 rounded-lg mb-6">
+        {/* <p className="bg-yellow-100 text-sm text-yellow-800 text-center px-3 py-2 rounded-lg mb-6">
           Displaying all invoices for public demo. Creation is disabled.
-        </p>
+        </p> */}
         <div className="flex justify-between mb-6">
           <h1 className="text-3xl font-semibold">Invoices</h1>
           <p>
